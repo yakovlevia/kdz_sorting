@@ -17,7 +17,7 @@ public:
         this->set_name("Quick Sort");
     }
 
-    int sort(std::vector<T> &vec, bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) override {
+    int my_sort(std::vector<T> &vec, bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) override {
         quick_sort(vec, 0, (int)vec.size() - 1, cmp);
         return std::is_sorted(vec.begin(), vec.end(), cmp);
     }

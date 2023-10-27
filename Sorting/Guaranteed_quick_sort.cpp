@@ -1,18 +1,32 @@
 #pragma once
 #include "Sort.cpp"
-#include "Quick_sort.cpp"
 #include <vector>
+#include <algorithm>
 
 template <typename T>
-class GuaranteedQuickSort : public QuickSort<T> {
+class GuaranteedQuickSort : public Sort<T> {
 public:
 
     GuaranteedQuickSort() {
         this->set_name("Guaranteed Quick Sort");
     }
 
+    int my_sort(std::vector<T> &vec, bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) override {
+        quick_sort(vec, 0, (int)vec.size() - 1, cmp);
+        return std::is_sorted(vec.begin(), vec.end(), cmp);
+    }
+
+    void quick_sort(std::vector <T> &vec, int l, int r, bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) {
+        if (l >= r) {
+            return;
+        }
+        int q = partition(vec, l, r, cmp);
+        quick_sort(vec, l, q, cmp);
+        quick_sort(vec, q + 1, r, cmp);
+    }
+
     int partition(std::vector<T> &vec, int l, int r, bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) {
-        T el = get_median(vec, l, r);
+        T el = get_median(vec, l, r, cmp);
         int i = l;
         int j = r;
         while (i <= j) {
@@ -30,29 +44,27 @@ public:
         return j;
     }
 
-    int get_median(std::vector<T> &vec, int l, int r, bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) {
-        
+    T get_median(std::vector<T> &vec, int l, int r, bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) {
+        if (r - l  + 1 <= 5) {
+            return median_of_5_elements(vec, l, r, cmp);
+        }
+
         std::vector <T> tmp;
-        tmp.reserve((r - l) / 5 + 1);
 
         for (int i = l; i <= r; i += 5) {
-            tmp.push_back(median_of_5_elements(vec, i, std::min(i + 4, vec.size() - 1), cmp));
-        }
-
-        if (vec.size() <= 5) {
-            return median_of_5_elements(vec);
+            int pos = i +  4;
+            if (pos > r) {
+                pos = r;
+            }
+            tmp.push_back(median_of_5_elements(vec, i, pos, cmp));
         }
         
-        return partition(tmp, 0, tmp.size() - 1, cmp);
+        return get_median(tmp, 0, tmp.size() - 1, cmp);
     }
 
-    T median_of_5_elements(std::vector <T> &vec, bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) {   
-        std::vector <T> tmp;
-        for (T &q : vec) {
-            tmp.push_back(q);
-        }
-        std::sort(tmp.begin(), tmp.end(), cmp);
-        return tmp[tmp.size() / 2];
+    T median_of_5_elements(std::vector <T> &vec, int l, int r, bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) {   
+        std::sort(vec.begin() + l, vec.begin() + r + 1, cmp);
+        return vec[l + (r - l) / 2];
     }
 
 };

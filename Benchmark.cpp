@@ -27,7 +27,7 @@ public:
     Benchmark() {
         rnd.seed(randD());
         small_test_sizes = {20, 50, 100, 500, 1000, 5000, 10000};
-        big_test_sizes = {100, 1000, 5000, 10000, 50000, 100000, 500000, 1000000, 5000000};
+        big_test_sizes = {100, 1000, 5000, 10000, 50000, 100000, 500000, 1000000};
         string_test_sizes = {10, 50, 100, 500, 1000, 5000, 10000};
         sort_names = {"Heap Sort", "Guaranteed Quick Sort", "Insertion Sort", "Quick Sort", "Merge Sort"};
         srt = nullptr;
@@ -108,7 +108,7 @@ public:
     long long run_1_test(int size, int str_size = -1, bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) {
         std::vector <T> tmp = make_random_test(size, str_size);
         auto c_start = std::chrono::high_resolution_clock::now();
-        if (!srt->sort(tmp, cmp)) {
+        if (!srt->my_sort(tmp, cmp)) {
             std::cout << "The array is sorted incorrectly\n";
             exit(-1);
         }
@@ -189,8 +189,8 @@ public:
     }
 
 
-    int sort(std::vector<T> &vec) {
-        return srt->sort(vec);
+    int my_sort(std::vector<T> &vec) {
+        return srt->my_sort(vec);
     }
 
     void print(std::vector<T> &vec) {
@@ -198,18 +198,18 @@ public:
     }
 
     long long get_n_operation_per_second() {
-        std::vector <long long> pos(1e7, 0);
-        std::vector <long long> temp(1e7, 0);
+        std::vector <long long> pos(1e9, 0);
+        std::vector <long long> temp(1e9, 0);
         srand(time(NULL));
-        for (int i = 0; i < 1e7; i++) {
-            pos[i] = rand() % (long long)1e7;
+        for (int i = 0; i < 1e9; i++) {
+            pos[i] = rand() % (long long)1e9;
         }
         auto c_start = std::chrono::high_resolution_clock::now();
-        for (int i = 0; i < 1e7; i++) {
+        for (int i = 0; i < 1e9; i++) {
             temp[pos[i]]++;
         }
         auto c_end = std::chrono::high_resolution_clock::now();
-        return round(1e7 / ((long long) std::chrono::duration_cast<std::chrono::nanoseconds>(c_end - c_start).count()) * 1e9);
+        return round(1e9 / ((long long) std::chrono::duration_cast<std::chrono::nanoseconds>(c_end - c_start).count()) * 1e9);
     }
 
     ~Benchmark(){

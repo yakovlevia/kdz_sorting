@@ -75,7 +75,7 @@ public:
         this->set_name("Heap Sort");
     }
 
-    int sort(std::vector<T> &vec, bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) override {
+    int my_sort(std::vector<T> &vec, bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) override {
         Heap<T> obj(vec, cmp);
         obj.build(vec);
 
