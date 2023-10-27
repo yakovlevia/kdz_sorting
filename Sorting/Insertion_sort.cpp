@@ -6,6 +6,10 @@ template <typename T>
 class InsertionSort : public Sort<T> {
 public:
 
+    InsertionSort() {
+        this->set_name("Insertion Sort");
+    }
+
     int sort(std::vector<T> &vec, bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) override {
         for (int i = 1; i < vec.size(); i++) {
             int k = i;

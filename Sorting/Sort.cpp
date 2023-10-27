@@ -14,7 +14,7 @@ public:
 
     virtual int sort(std::vector<T> &vec, bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) = 0;
 
-    void set_name(std::string &name) {
+    void set_name(std::string name) {
         sort_name = name;
     }
 

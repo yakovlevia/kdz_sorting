@@ -7,6 +7,10 @@ template <typename T>
 class GuaranteedQuickSort : public QuickSort<T> {
 public:
 
+    GuaranteedQuickSort() {
+        this->set_name("Guaranteed Quick Sort");
+    }
+
     int partition(std::vector<T> &vec, int l, int r, bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) {
         T el = get_median(vec, l, r);
         int i = l;

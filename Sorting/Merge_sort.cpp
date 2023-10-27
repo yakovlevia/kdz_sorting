@@ -6,20 +6,24 @@ template <typename T>
 class MergeSort : public Sort<T> {
 public:
 
+    MergeSort() {
+        this->set_name("Merge Sort");
+    }
+
     int sort(std::vector<T> &vec, bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) override {
         merge_sort(vec, cmp);
         return std::is_sorted(vec.begin(), vec.end(), cmp);
     }
 
-    void merge_sort(std::vector <int> &vec, bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) {
+    void merge_sort(std::vector <T> &vec, bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) {
         if (vec.size() <= 1) {
             return;
         }
 
         int r = (int)vec.size() - 1;
         int mid = r >> 1;
-        std::vector <int> left(mid + 1);
-        std::vector <int> right(r - mid);
+        std::vector <T> left(mid + 1);
+        std::vector <T> right(r - mid);
 
         for (int i = 0; i <= mid; i++) {
             left[i] = vec[i];
