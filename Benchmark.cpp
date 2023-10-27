@@ -86,6 +86,10 @@ public:
                 test[i] = tmp_str;
             }
         }
+        else {
+            std::cout << "Can't generate tests for this type\n";
+            exit(-1); 
+        }
         
         return test;
     }
