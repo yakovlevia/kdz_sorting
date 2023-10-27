@@ -27,6 +27,7 @@ public:
         rnd.seed(randD());
         small_test_sizes = {20, 50, 100, 500, 1000, 5000, 10000};
         big_test_sizes = {100, 1000, 5000, 10000, 50000, 100000, 500000, 1000000, 5000000};
+        srt = nullptr;
         chage_sort("Insertion Sort");
     }
     
@@ -38,7 +39,7 @@ public:
     }
 
     void chage_sort(std::string name) {
-        if (!srt) delete srt;
+        delete srt;
         std::map<std::string, int> my_map;
         sort_names = {"Heap Sort", "Guaranteed Quick Sort", "Insertion Sort", "Quick Sort", "Merge Sort"};
         for (int i = 0; i < sort_names.size(); i++) {
@@ -161,7 +162,7 @@ public:
     }
 
     ~Benchmark(){
-        if (!srt) delete srt;
+        delete srt;
     }
     
 };
