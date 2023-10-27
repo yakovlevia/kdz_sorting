@@ -110,14 +110,18 @@ public:
         return time;
     }
 
-    void get_time_for_small_numeric_type_tests() {
+    void get_cur_time_for_small_numeric_type_tests() {
+        std::cout << srt->get_name() << "\n";
+        for (auto &g : small_test_sizes) {
+            std::cout << g << " | " << run_n_tests(g, 10) << "\n";
+        }
+        std::cout << "\n";
+    }
+
+    void get_all_time_for_small_numeric_type_tests() {
         for (int i = 0; i < sort_names.size(); i++) {
             chage_sort(sort_names[i]);
-            std::cout << sort_names[i] << "\n";
-            for (auto &g : small_test_sizes) {
-                std::cout << g << " | " << run_n_tests(g, 10) << "\n";
-            }
-            std::cout << "\n";
+            get_cur_time_for_small_numeric_type_tests();
         }
     }
 
@@ -129,7 +133,9 @@ public:
         return srt->print(vec);
     }
 
-    ~Benchmark() = default;
+    ~Benchmark(){
+        if (!srt) free(srt);
+    }
     
 };
 

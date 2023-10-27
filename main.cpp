@@ -11,6 +11,6 @@
 
 int main() {
     Benchmark<int> bench("Guaranteed Quick Sort");
-    bench.get_time_for_small_numeric_type_tests();
+    bench.get_all_time_for_small_numeric_type_tests();
     //std::cout << std::is_same_v<long long, int>;
 }
