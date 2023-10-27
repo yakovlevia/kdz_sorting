@@ -197,7 +197,7 @@ public:
         return srt->print(vec);
     }
 
-    unsigned long long get_n_operation_per_second() {
+    long long get_n_operation_per_second() {
         std::vector <long long> pos(1e7, 0);
         std::vector <long long> temp(1e7, 0);
         srand(time(NULL));
@@ -209,7 +209,7 @@ public:
             temp[pos[i]]++;
         }
         auto c_end = std::chrono::high_resolution_clock::now();
-        return std::chrono::duration_cast<std::chrono::seconds>(c_end - c_start).count();
+        return round(1e7 / ((long long) std::chrono::duration_cast<std::chrono::nanoseconds>(c_end - c_start).count()) * 1e9);
     }
 
     ~Benchmark(){
