@@ -46,7 +46,7 @@ public:
         return partition(tmp, 0, tmp.size() - 1, cmp);
     }
 
-    T median_of_5_elements(std::vector <T> &vec, bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) {
+    T median_of_5_elements(std::vector <T> &vec, bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) {   
         std::vector <T> tmp;
         for (T &q : vec) {
             tmp.push_back(q);

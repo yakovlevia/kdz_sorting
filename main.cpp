@@ -10,6 +10,7 @@
 #include "Benchmark.cpp"
 
 int main() {
-    Benchmark<std::string> bench("Guaranteed Quick Sort");
-    std::cout << bench.run_1_test(2, 20);
+    Benchmark<int> bench("Guaranteed Quick Sort");
+    bench.get_time_for_small_numeric_type_tests();
+    //std::cout << std::is_same_v<long long, int>;
 }
