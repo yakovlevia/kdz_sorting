@@ -38,7 +38,7 @@ public:
     }
 
     void chage_sort(std::string name) {
-        if (!srt) free(srt);
+        if (!srt) delete srt;
         std::map<std::string, int> my_map;
         sort_names = {"Heap Sort", "Guaranteed Quick Sort", "Insertion Sort", "Quick Sort", "Merge Sort"};
         for (int i = 0; i < sort_names.size(); i++) {
@@ -161,7 +161,7 @@ public:
     }
 
     ~Benchmark(){
-        if (!srt) free(srt);
+        if (!srt) delete srt;
     }
     
 };
