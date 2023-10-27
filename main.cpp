@@ -12,5 +12,6 @@
 int main() {
     Benchmark<int> bench;
     bench.get_all_time_for_small_numeric_type_tests();
-    //std::cout << std::is_same_v<long long, int>;
+    std::cout << "--------------------------------------------------\n";
+    bench.get_all_time_for_big_numeric_type_tests();
 }

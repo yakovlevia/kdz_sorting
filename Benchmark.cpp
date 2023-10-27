@@ -67,23 +67,22 @@ public:
         }  
     }
 
-    template <typename G>
-    std::vector<G> make_random_test(int n, int str_size = -1) {
-        std::vector <G> test(n);
+    std::vector<T> make_random_test(int n, int str_size = -1) {
+        std::vector <T> test(n);
 
-        if constexpr (std::is_same_v<G, int>) {
+        if constexpr (std::is_same_v<T, int>) {
             std::uniform_int_distribution<int> gen(INT_MIN, INT_MAX);
             for (int i = 0; i < n; i++) {
                 test[i] = gen(rnd);
             }
         }
-        else if constexpr (std::is_same_v<G, long long>) {
+        else if constexpr (std::is_same_v<T, long long>) {
             std::uniform_int_distribution<long long> gen(LONG_LONG_MIN, LONG_LONG_MAX);
             for (int i = 0; i < n; i++) {
                 test[i] = gen(rnd);
             }
         }
-        else if constexpr (std::is_same_v<G, std::string>) {
+        else if constexpr (std::is_same_v<T, std::string>) {
             std::uniform_int_distribution<int> gen(0, 25);
             for (int i = 0; i < n; i++) {
                 std::string tmp_str;
@@ -102,7 +101,7 @@ public:
     }
 
     long long run_1_test(int size, int str_size = -1) {
-        std::vector <T> tmp = make_random_test<T>(size, str_size);
+        std::vector <T> tmp = make_random_test(size, str_size);
         auto c_start = std::chrono::high_resolution_clock::now();
         if (!srt->sort(tmp)) {
             std::cout << "The array is sorted incorrectly\n";
@@ -124,7 +123,7 @@ public:
     void get_cur_time_for_small_numeric_type_tests() {
         std::cout << srt->get_name() << "\n";
         for (auto &g : small_test_sizes) {
-            std::cout << g << " | " << run_n_tests(g, 10) << "\n";
+            std::cout << g << " | " << run_n_tests(g, 10) << " nanoseconds\n";
         }
         std::cout << "\n";
     }
@@ -135,6 +134,23 @@ public:
             get_cur_time_for_small_numeric_type_tests();
         }
     }
+
+    void get_cur_time_for_big_numeric_type_tests() {
+        std::cout << srt->get_name() << "\n";
+        for (auto &g : big_test_sizes) {
+            std::cout << g << " | " << run_n_tests(g, 10) << " nanoseconds\n";
+        }
+        std::cout << "\n";
+    }
+
+    void get_all_time_for_big_numeric_type_tests() {
+        for (int i = 0; i < sort_names.size(); i++) {
+            if (sort_names[i] == "Insertion Sort") continue;
+            chage_sort(sort_names[i]);
+            get_cur_time_for_big_numeric_type_tests();
+        }
+    }
+
 
     int sort(std::vector<T> &vec) {
         return srt->sort(vec);
