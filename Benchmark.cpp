@@ -23,6 +23,13 @@ private:
     Sort<T> *srt;
 
 public:
+    Benchmark() {
+        rnd.seed(randD());
+        small_test_sizes = {20, 50, 100, 500, 1000, 5000, 10000};
+        big_test_sizes = {100, 1000, 5000, 10000, 50000, 100000, 500000, 1000000, 5000000};
+        chage_sort("Insertion Sort");
+    }
+    
     Benchmark(std::string name) {
         rnd.seed(randD());
         small_test_sizes = {20, 50, 100, 500, 1000, 5000, 10000};
