@@ -30,23 +30,23 @@ public:
         std::map<std::string, int> my_map;
         std::vector<std::string> names = {"Heap Sort", "Guaranteed Quick Sort", "Insertion Sort", "Quick Sort", "Merge Sort"};
         for (int i = 0; i < names.size(); i++) {
-            my_map[names[i]] = i;
+            my_map[names[i]] = i + 1;
         }
-
+        
         switch (my_map[name]) {
-            case 0:
+            case 1:
                 srt = new HeapSort<T>;
                 break;
-            case 1:
+            case 2:
                 srt = new GuaranteedQuickSort<T>;
                 break;
-            case 2:
+            case 3:
                 srt = new InsertionSort<T>;
                 break;
-            case 3:
+            case 4:
                 srt = new QuickSort<T>;
                 break;
-            case 4:
+            case 5:
                 srt = new MergeSort<T>;
                 break;
             default:

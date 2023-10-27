@@ -10,7 +10,6 @@
 #include "Benchmark.cpp"
 
 int main() {
-    Benchmark<std::string> bench("Quick Sort");
-    std::vector <long long> vec = {-1, -2, -3, -4};
+    Benchmark<std::string> bench("Guaranteed Quick Sort");
     std::cout << bench.run_1_test(2, 20);
 }
