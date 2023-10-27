@@ -17,6 +17,7 @@ class Benchmark {
 private:
     std::vector <int> small_test_sizes;
     std::vector <int> big_test_sizes;
+    std::vector <int> string_test_sizes;
     std::mt19937 rnd;
     std::random_device randD;
     std::vector<std::string> sort_names;
@@ -27,6 +28,7 @@ public:
         rnd.seed(randD());
         small_test_sizes = {20, 50, 100, 500, 1000, 5000, 10000};
         big_test_sizes = {100, 1000, 5000, 10000, 50000, 100000, 500000, 1000000, 5000000};
+        string_test_sizes = {10, 50, 100, 500, 1000, 5000, 10000};
         sort_names = {"Heap Sort", "Guaranteed Quick Sort", "Insertion Sort", "Quick Sort", "Merge Sort"};
         srt = nullptr;
         chage_sort("Insertion Sort");
@@ -36,6 +38,7 @@ public:
         rnd.seed(randD());
         small_test_sizes = {20, 50, 100, 500, 1000, 5000, 10000};
         big_test_sizes = {100, 1000, 5000, 10000, 50000, 100000, 500000, 1000000, 5000000};
+        string_test_sizes = {10, 50, 100, 500, 1000, 5000, 10000};
         sort_names = {"Heap Sort", "Guaranteed Quick Sort", "Insertion Sort", "Quick Sort", "Merge Sort"};
         chage_sort(name);
     }
@@ -102,10 +105,10 @@ public:
         return test;
     }
 
-    long long run_1_test(int size, int str_size = -1) {
+    long long run_1_test(int size, int str_size = -1, bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) {
         std::vector <T> tmp = make_random_test(size, str_size);
         auto c_start = std::chrono::high_resolution_clock::now();
-        if (!srt->sort(tmp)) {
+        if (!srt->sort(tmp, cmp)) {
             std::cout << "The array is sorted incorrectly\n";
             exit(-1);
         }
@@ -113,43 +116,75 @@ public:
         return std::chrono::duration_cast<std::chrono::nanoseconds>(c_end - c_start).count();
     }
 
-    long long run_n_tests(int size, int n, int str_size = -1) {
+    long long run_n_tests(int size, int n, int str_size = -1, bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) {
         long long time = 0;
         for (int i = 0; i < n; i++) {
-            time += run_1_test(size, str_size);
+            time += run_1_test(size, str_size, cmp);
         }
         time /= n;
         return time;
     }
 
-    void get_cur_time_for_small_numeric_type_tests() {
+    void get_cur_time_for_small_numeric_type_tests(bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) {
         std::cout << srt->get_name() << "\n";
         for (auto &g : small_test_sizes) {
-            std::cout << g << " | " << run_n_tests(g, 10) << " nanoseconds\n";
+            std::cout << g << " | " << run_n_tests(g, 10, -1, cmp) << " nanoseconds\n";
         }
         std::cout << "\n";
     }
 
-    void get_all_time_for_small_numeric_type_tests() {
+    void get_all_time_for_small_numeric_type_tests(bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) {
         for (int i = 0; i < sort_names.size(); i++) {
             chage_sort(sort_names[i]);
-            get_cur_time_for_small_numeric_type_tests();
+            get_cur_time_for_small_numeric_type_tests(cmp);
         }
     }
 
-    void get_cur_time_for_big_numeric_type_tests() {
+    void get_cur_time_for_big_numeric_type_tests(bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) {
         std::cout << srt->get_name() << "\n";
         for (auto &g : big_test_sizes) {
-            std::cout << g << " | " << run_n_tests(g, 10) << " nanoseconds\n";
+            std::cout << g << " | " << run_n_tests(g, 10, -1, cmp) << " nanoseconds\n";
         }
         std::cout << "\n";
     }
 
-    void get_all_time_for_big_numeric_type_tests() {
+    void get_all_time_for_big_numeric_type_tests(bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) {
         for (int i = 0; i < sort_names.size(); i++) {
             if (sort_names[i] == "Insertion Sort") continue;
             chage_sort(sort_names[i]);
-            get_cur_time_for_big_numeric_type_tests();
+            get_cur_time_for_big_numeric_type_tests(cmp);
+        }
+    }
+
+    void get_cur_time_for_string_tests(bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) {
+        if constexpr (!std::is_same_v<T, std::string>) {
+            std:: cout << "The Bechmark is not string\n";
+            exit(-1);
+        }
+        std::cout << srt->get_name() << "\n";
+        for (int i = 0; i < string_test_sizes.size(); i++) {
+            std::cout << " | " << string_test_sizes[i];
+        }
+        std::cout << '\n';
+        for (auto &g : small_test_sizes) {
+            std::cout << g;
+            for (auto &q :string_test_sizes) {
+                std::cout << " | " << run_n_tests(g, 10, q, cmp) << " nanoseconds";
+            }
+            std::cout << "\n";
+        }
+        std::cout << "\n";
+    }
+
+    void get_all_time_for_string_tests(bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) {
+        if constexpr (!std::is_same_v<T, std::string>) {
+            std:: cout << "The Bechmark is not string\n";
+            exit(-1);
+        }
+        for (int i = 0; i < sort_names.size(); i++) {
+            if (sort_names[i] == "Insertion Sort") continue;
+            chage_sort(sort_names[i]);
+            get_cur_time_for_string_tests(cmp);
         }
     }
 
@@ -160,6 +195,21 @@ public:
 
     void print(std::vector<T> &vec) {
         return srt->print(vec);
+    }
+
+    unsigned long long get_n_operation_per_second() {
+        std::vector <long long> pos(1e7, 0);
+        std::vector <long long> temp(1e7, 0);
+        srand(time(NULL));
+        for (int i = 0; i < 1e7; i++) {
+            pos[i] = rand() % (long long)1e7;
+        }
+        auto c_start = std::chrono::high_resolution_clock::now();
+        for (int i = 0; i < 1e7; i++) {
+            temp[pos[i]]++;
+        }
+        auto c_end = std::chrono::high_resolution_clock::now();
+        return std::chrono::duration_cast<std::chrono::seconds>(c_end - c_start).count();
     }
 
     ~Benchmark(){
