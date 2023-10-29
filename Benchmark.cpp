@@ -128,6 +128,10 @@ public:
     }
 
     void get_cur_time_for_small_numeric_type_tests(bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) {
+        if constexpr (!std::is_integral_v<T>) {
+            std:: cout << "The Bechmark is not number\n";
+            exit(-1);
+        }
         std::cout << srt->get_name() << "\n";
         for (auto &g : small_test_sizes) {
             std::cout << std::setw(10) << g << " | " << std::setw(11) << run_n_tests(g, 10, -1, cmp) << " nanoseconds\n";
@@ -136,6 +140,10 @@ public:
     }
 
     void get_all_time_for_small_numeric_type_tests(bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) {
+        if constexpr (!std::is_integral_v<T>) {
+            std:: cout << "The Bechmark is not number\n";
+            exit(-1);
+        }
         for (int i = 0; i < sort_names.size(); i++) {
             chage_sort(sort_names[i]);
             get_cur_time_for_small_numeric_type_tests(cmp);
@@ -143,6 +151,10 @@ public:
     }
 
     void get_cur_time_for_big_numeric_type_tests(bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) {
+        if constexpr (!std::is_integral_v<T>) {
+            std:: cout << "The Bechmark is not number\n";
+            exit(-1);
+        }
         std::cout << srt->get_name() << "\n";
         for (auto &g : big_test_sizes) {
             std::cout << std::setw(10) << g << " | " << std::setw(11) << run_n_tests(g, 10, -1, cmp) << " nanoseconds\n";
@@ -151,6 +163,10 @@ public:
     }
 
     void get_all_time_for_big_numeric_type_tests(bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) {
+        if constexpr (!std::is_integral_v<T>) {
+            std:: cout << "The Bechmark is not number\n";
+            exit(-1);
+        }
         for (int i = 0; i < sort_names.size(); i++) {
             if (sort_names[i] == "Insertion Sort") continue;
             if (sort_names[i] == "Binary Search Insertion Sort") continue;
@@ -165,8 +181,9 @@ public:
             exit(-1);
         }
         std::cout << srt->get_name() << "\n";
+        std::cout << std::setw(11) << "N /\ M";
         for (int i = 0; i < string_test_sizes.size(); i++) {
-            std::cout << " | " << string_test_sizes[i];
+            std::cout << "|" << std::setw(25) << string_test_sizes[i];
         }
         std::cout << '\n';
         for (auto &g : small_test_sizes) {
