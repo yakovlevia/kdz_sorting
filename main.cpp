@@ -7,15 +7,13 @@
 #include "Sorting/Insertion_sort.cpp"
 #include "Sorting/Merge_sort.cpp"
 #include "Sorting/Quick_sort.cpp"
+#include "Sorting/Binary_search_insertion_sort.cpp"
 #include "Benchmark.cpp"
 
 int main() {
-    Benchmark<int> bench;
-    //std::cout << bench.get_n_operation_per_second() << "\n";
-    //return 0;
-    //bench.get_all_time_for_small_numeric_type_tests();
+    Benchmark<long long> bench("Quick Sort");
+    //bench.get_cur_time_for_small_numeric_type_tests();
     std::cout << "--------------------------------------------------\n";
-    bench.get_all_time_for_big_numeric_type_tests();
+    bench.get_all_time_for_small_numeric_type_tests();
     std::cout << "--------------------------------------------------\n";
-    //bench.get_all_time_for_string_tests();
 }

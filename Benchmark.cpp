@@ -5,6 +5,7 @@
 #include <ctime>
 #include <chrono>
 #include <map>
+#include<iomanip>
 #include "Sorting/Sort.cpp"
 #include "Sorting/Heap_sort.cpp"
 #include "Sorting/Guaranteed_quick_sort.cpp"
@@ -29,7 +30,7 @@ public:
         small_test_sizes = {20, 50, 100, 500, 1000, 5000, 10000};
         big_test_sizes = {100, 1000, 5000, 10000, 50000, 100000, 500000, 1000000};
         string_test_sizes = {10, 50, 100, 500, 1000, 5000, 10000};
-        sort_names = {"Heap Sort", "Guaranteed Quick Sort", "Insertion Sort", "Quick Sort", "Merge Sort"};
+        sort_names = {"Heap Sort", "Guaranteed Quick Sort", "Insertion Sort", "Quick Sort", "Merge Sort", "Binary Search Insertion Sort"};
         srt = nullptr;
         chage_sort("Insertion Sort");
     }
@@ -39,7 +40,8 @@ public:
         small_test_sizes = {20, 50, 100, 500, 1000, 5000, 10000};
         big_test_sizes = {100, 1000, 5000, 10000, 50000, 100000, 500000, 1000000, 5000000};
         string_test_sizes = {10, 50, 100, 500, 1000, 5000, 10000};
-        sort_names = {"Heap Sort", "Guaranteed Quick Sort", "Insertion Sort", "Quick Sort", "Merge Sort"};
+        sort_names = {"Heap Sort", "Guaranteed Quick Sort", "Insertion Sort", "Quick Sort", "Merge Sort", "Binary Search Insertion Sort"};
+        srt = nullptr;
         chage_sort(name);
     }
 
@@ -65,6 +67,9 @@ public:
                 break;
             case 5:
                 srt = new MergeSort<T>;
+                break;
+            case 6:
+                srt = new BinarySearchInsertionSort<T>;
                 break;
             default:
                 std::cout << "No such sorting\n";
@@ -110,6 +115,7 @@ public:
         auto c_start = std::chrono::high_resolution_clock::now();
         if (!srt->my_sort(tmp, cmp)) {
             std::cout << "The array is sorted incorrectly\n";
+            print(tmp);
             exit(-1);
         }
         auto c_end = std::chrono::high_resolution_clock::now();
@@ -128,7 +134,7 @@ public:
     void get_cur_time_for_small_numeric_type_tests(bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) {
         std::cout << srt->get_name() << "\n";
         for (auto &g : small_test_sizes) {
-            std::cout << g << " | " << run_n_tests(g, 10, -1, cmp) << " nanoseconds\n";
+            std::cout << std::setw(10) << g << " | " << std::setw(10) << run_n_tests(g, 10, -1, cmp) << " nanoseconds\n";
         }
         std::cout << "\n";
     }
@@ -143,7 +149,7 @@ public:
     void get_cur_time_for_big_numeric_type_tests(bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) {
         std::cout << srt->get_name() << "\n";
         for (auto &g : big_test_sizes) {
-            std::cout << g << " | " << run_n_tests(g, 10, -1, cmp) << " nanoseconds\n";
+            std::cout << std::setw(10) << g << " | " << std::setw(10) << run_n_tests(g, 10, -1, cmp) << " nanoseconds\n";
         }
         std::cout << "\n";
     }
@@ -167,9 +173,9 @@ public:
         }
         std::cout << '\n';
         for (auto &g : small_test_sizes) {
-            std::cout << g;
+            std::cout << std::setw(10) << g;
             for (auto &q :string_test_sizes) {
-                std::cout << " | " << run_n_tests(g, 10, q, cmp) << " nanoseconds";
+                std::cout << " | " << std::setw(10) << run_n_tests(g, 10, q, cmp) << " nanoseconds";
             }
             std::cout << "\n";
         }

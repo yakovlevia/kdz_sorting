@@ -15,45 +15,41 @@ public:
         return std::is_sorted(vec.begin(), vec.end(), cmp);
     }
 
-    void merge_sort(std::vector <T> &vec, bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) {
-        if (vec.size() <= 1) {
-            return;
-        }
-
-        int r = (int)vec.size() - 1;
-        int mid = r >> 1;
-        std::vector <T> left(mid + 1);
-        std::vector <T> right(r - mid);
-
-        for (int i = 0; i <= mid; i++) {
-            left[i] = vec[i];
-        }
-        for (int i = mid + 1; i <= r; i++) {
-            right[i - mid - 1] = vec[i];
-        }
-
-        merge_sort(left, cmp);
-        merge_sort(right, cmp);
-
-        int cnt_l, cnt_r;
-        cnt_l = cnt_r = 0;
-
-        for (int i = 0; i <= r; i++) {
-            if (cnt_l > mid) {
-                vec[i] = right[cnt_r];
-                cnt_r++;
-            }
-            else if (cnt_r > r - mid - 1) {
-                vec[i] = left[cnt_l];
-                cnt_l++;
-            }
-            else if (cmp(left[cnt_l], right[cnt_r])) {
-                vec[i] = left[cnt_l];
-                cnt_l++;
+    void merge(std::vector <T> &vec, int left, int mid, int right, bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) {
+        int it_l = 0;
+        int it_r = 0;
+        std::vector <T> tmp(right - left);
+  
+        while (left + it_l < mid && mid + it_r < right) {
+            if (cmp(vec[left + it_l], vec[mid + it_r])) {
+                tmp[it_l + it_r] = vec[left + it_l];
+                it_l++;
             }
             else {
-                vec[i] = right[cnt_r];
-                cnt_r++;
+                tmp[it_l + it_r] = vec[mid + it_r];
+                it_r++;
+            }
+        }
+  
+        while (left + it_l < mid) {
+            tmp[it_l + it_r] = vec[left + it_l];
+            it_l++;
+        }
+  
+        while (mid + it_r < right) {
+            tmp[it_l + it_r] = vec[mid + it_r];
+            it_r++;
+        }
+  
+        for (int i = left; i < right; i++) {
+            vec[i] = tmp[i - left];
+        }
+    }
+
+    void merge_sort(std::vector <T> &vec, bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) {
+        for (int i = 1; i < vec.size(); i *= 2) {
+            for (int j = 0; j < vec.size() - i; j += 2 * i) {
+                merge(vec, j, j + i, std::min(j + 2 * i, (int)vec.size()), cmp);
             }
         }
     }
