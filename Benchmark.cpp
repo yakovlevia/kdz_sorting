@@ -130,7 +130,7 @@ public:
     void get_cur_time_for_small_numeric_type_tests(bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) {
         std::cout << srt->get_name() << "\n";
         for (auto &g : small_test_sizes) {
-            std::cout << std::setw(10) << g << " | " << std::setw(10) << run_n_tests(g, 10, -1, cmp) << " nanoseconds\n";
+            std::cout << std::setw(10) << g << " | " << std::setw(11) << run_n_tests(g, 10, -1, cmp) << " nanoseconds\n";
         }
         std::cout << "\n";
     }
@@ -145,7 +145,7 @@ public:
     void get_cur_time_for_big_numeric_type_tests(bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) {
         std::cout << srt->get_name() << "\n";
         for (auto &g : big_test_sizes) {
-            std::cout << std::setw(10) << g << " | " << std::setw(10) << run_n_tests(g, 10, -1, cmp) << " nanoseconds\n";
+            std::cout << std::setw(10) << g << " | " << std::setw(11) << run_n_tests(g, 10, -1, cmp) << " nanoseconds\n";
         }
         std::cout << "\n";
     }
@@ -172,7 +172,7 @@ public:
         for (auto &g : small_test_sizes) {
             std::cout << std::setw(10) << g;
             for (auto &q :string_test_sizes) {
-                std::cout << " | " << std::setw(10) << run_n_tests(g, 10, q, cmp) << " nanoseconds";
+                std::cout << " | " << std::setw(11) << run_n_tests(g, 10, q, cmp) << " nanoseconds";
             }
             std::cout << "\n";
         }
