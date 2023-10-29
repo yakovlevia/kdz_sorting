@@ -2,8 +2,6 @@
 #include "Sort.cpp"
 #include <vector>
 #include <random>
-#include <iostream>
-
 
 template <typename T>
 class QuickSort : public Sort<T> {

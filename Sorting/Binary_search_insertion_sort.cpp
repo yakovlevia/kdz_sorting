@@ -1,7 +1,6 @@
 #pragma once
 #include "Sort.cpp"
 #include <vector>
-#include <iostream>
 
 template <typename T>
 class BinarySearchInsertionSort : public Sort<T> {

@@ -2,7 +2,6 @@
 #include "Sort.cpp"
 #include <vector>
 #include <concepts>
-#include <assert.h>
 
 template <typename T>
 class Heap {
@@ -62,6 +61,11 @@ public:
         }
         std::cout << "\n";
     }
+
+    ~Heap() {
+        delete cmp;
+    }
+
 
 };
 
