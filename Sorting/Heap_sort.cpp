@@ -62,17 +62,13 @@ public:
         std::cout << "\n";
     }
 
-    ~Heap() {
-        delete cmp;
-    }
+    ~Heap() = default;
 
 
 };
 
 template <typename T>
 class HeapSort : public Sort<T> {
-private:
-
 public:
 
     HeapSort() {

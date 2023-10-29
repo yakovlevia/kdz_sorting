@@ -6,8 +6,10 @@
 template <typename T>
 class QuickSort : public Sort<T> {
 private:
+
     std::mt19937 rnd;
     std::random_device randD;
+    
 public:
 
     QuickSort() {

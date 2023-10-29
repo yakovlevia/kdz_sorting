@@ -11,9 +11,9 @@
 #include "Benchmark.cpp"
 
 int main() {
-    Benchmark<long long> bench("Quick Sort");
+    Benchmark<long long> bench;
     bench.get_all_time_for_small_numeric_type_tests();
     std::cout << "--------------------------------------------------\n";
-    bench.get_all_time_for_big_numeric_type_tests();
-    std::cout << "--------------------------------------------------\n";
+    //bench.get_all_time_for_big_numeric_type_tests();
+    //std::cout << "--------------------------------------------------\n";
 }

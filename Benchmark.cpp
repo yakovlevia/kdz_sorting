@@ -5,13 +5,14 @@
 #include <ctime>
 #include <chrono>
 #include <map>
-#include<iomanip>
+#include <iomanip>
 #include "Sorting/Sort.cpp"
 #include "Sorting/Heap_sort.cpp"
 #include "Sorting/Guaranteed_quick_sort.cpp"
 #include "Sorting/Insertion_sort.cpp"
 #include "Sorting/Merge_sort.cpp"
 #include "Sorting/Quick_sort.cpp"
+#include "Sorting/Skip_list_sort.cpp"
 
 template <typename T>
 class Benchmark {
@@ -25,22 +26,13 @@ private:
     Sort<T> *srt;
 
 public:
-    Benchmark() {
-        rnd.seed(randD());
-        small_test_sizes = {10, 50, 100, 500, 1000, 5000, 10000};
-        big_test_sizes = {100, 500, 1000, 5000, 10000, 50000, 100000, 500000, 1000000};
-        string_test_sizes = {10, 50, 100, 500, 1000, 5000, 10000};
-        sort_names = {"Heap Sort", "Guaranteed Quick Sort", "Insertion Sort", "Quick Sort", "Merge Sort", "Binary Search Insertion Sort"};
-        srt = nullptr;
-        chage_sort("Insertion Sort");
-    }
     
-    Benchmark(std::string name) {
+    Benchmark(std::string name = "Insertion Sort") {
         rnd.seed(randD());
         small_test_sizes = {10, 50, 100, 500, 1000, 5000, 10000};
         big_test_sizes = {100, 500, 1000, 5000, 10000, 50000, 100000, 500000, 1000000, 5000000};
         string_test_sizes = {10, 50, 100, 500, 1000, 5000, 10000};
-        sort_names = {"Heap Sort", "Guaranteed Quick Sort", "Insertion Sort", "Quick Sort", "Merge Sort", "Binary Search Insertion Sort"};
+        sort_names = {"Heap Sort", "Guaranteed Quick Sort", "Insertion Sort", "Quick Sort", "Merge Sort", "Binary Search Insertion Sort", "Skip List Sort"};
         srt = nullptr;
         chage_sort(name);
     }
@@ -70,6 +62,9 @@ public:
                 break;
             case 6:
                 srt = new BinarySearchInsertionSort<T>;
+                break;
+            case 7:
+                srt = new SkipListSort<T>;
                 break;
             default:
                 std::cout << "No such sorting\n";

@@ -8,6 +8,7 @@
 template <typename T>
 class Sort {
 private:
+    
     std::string sort_name;
     
 public:
