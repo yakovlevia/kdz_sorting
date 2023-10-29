@@ -13,6 +13,7 @@
 #include "Sorting/Merge_sort.cpp"
 #include "Sorting/Quick_sort.cpp"
 #include "Sorting/Skip_list_sort.cpp"
+#include "Sorting/Binary_search_insertion_sort.cpp"
 
 template <typename T>
 class Benchmark {
