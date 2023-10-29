@@ -27,8 +27,8 @@ private:
 public:
     Benchmark() {
         rnd.seed(randD());
-        small_test_sizes = {20, 50, 100, 500, 1000, 5000, 10000};
-        big_test_sizes = {100, 1000, 5000, 10000, 50000, 100000, 500000, 1000000};
+        small_test_sizes = {10, 50, 100, 500, 1000, 5000, 10000};
+        big_test_sizes = {100, 500, 1000, 5000, 10000, 50000, 100000, 500000, 1000000};
         string_test_sizes = {10, 50, 100, 500, 1000, 5000, 10000};
         sort_names = {"Heap Sort", "Guaranteed Quick Sort", "Insertion Sort", "Quick Sort", "Merge Sort", "Binary Search Insertion Sort"};
         srt = nullptr;
@@ -37,8 +37,8 @@ public:
     
     Benchmark(std::string name) {
         rnd.seed(randD());
-        small_test_sizes = {20, 50, 100, 500, 1000, 5000, 10000};
-        big_test_sizes = {100, 1000, 5000, 10000, 50000, 100000, 500000, 1000000, 5000000};
+        small_test_sizes = {10, 50, 100, 500, 1000, 5000, 10000};
+        big_test_sizes = {100, 500, 1000, 5000, 10000, 50000, 100000, 500000, 1000000, 5000000};
         string_test_sizes = {10, 50, 100, 500, 1000, 5000, 10000};
         sort_names = {"Heap Sort", "Guaranteed Quick Sort", "Insertion Sort", "Quick Sort", "Merge Sort", "Binary Search Insertion Sort"};
         srt = nullptr;
@@ -157,6 +157,7 @@ public:
     void get_all_time_for_big_numeric_type_tests(bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) {
         for (int i = 0; i < sort_names.size(); i++) {
             if (sort_names[i] == "Insertion Sort") continue;
+            if (sort_names[i] == "Binary Search Insertion Sort") continue;
             chage_sort(sort_names[i]);
             get_cur_time_for_big_numeric_type_tests(cmp);
         }
