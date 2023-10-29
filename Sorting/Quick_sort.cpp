@@ -10,18 +10,8 @@ private:
     std::mt19937 rnd;
     std::random_device randD;
     
-public:
-
-    QuickSort() {
-        rnd.seed(randD());
-        this->set_name("Quick Sort");
-    }
-
-    int my_sort(std::vector<T> &vec, bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) override {
-        quick_sort(vec, 0, (int)vec.size() - 1, cmp);
-        return std::is_sorted(vec.begin(), vec.end(), cmp);
-    }
-
+protected:
+    
     void quick_sort(std::vector <T> &vec, int l, int r, bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) {
         if (l >= r) {
             return;
@@ -50,6 +40,18 @@ public:
             std::swap(vec[i++], vec[j--]);
         }
         return j;
+    }
+
+public:
+
+    QuickSort() {
+        rnd.seed(randD());
+        this->set_name("Quick Sort");
+    }
+
+    int my_sort(std::vector<T> &vec, bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) override {
+        quick_sort(vec, 0, (int)vec.size() - 1, cmp);
+        return std::is_sorted(vec.begin(), vec.end(), cmp);
     }
 
 };

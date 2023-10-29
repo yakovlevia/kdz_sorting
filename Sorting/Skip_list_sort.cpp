@@ -13,14 +13,7 @@ struct SLNode {
     SLNode(SLNode<T> *_next, SLNode<T> *_down) : next(_next), down(_down) {}
     SLNode(SLNode<T> *_next, SLNode<T> *_down, T _value) : next(_next), down(_down), value(_value) {}
 
-    ~SLNode() {
-        // SLNode<T> *cur = this;
-        // while (cur) {
-        //     SLNode<T> *tmp = cur;
-        //     cur = cur->down;
-        //     delete tmp;
-        // }
-    }
+    ~SLNode() = default;
 };
 
 
@@ -107,12 +100,19 @@ public:
     }
 
     ~SkipList() {
-        // SLNode<T> *cur = start;
-        // while (cur) {
-        //     SLNode<T> *tmp = cur;
-        //     cur = cur->next;
-        //     delete tmp;
-        // }
+        SLNode<T> *cur = start;
+        while (cur) {
+            SLNode<T> *tmp = cur->down;
+            while (tmp) {
+                SLNode<T> *tmp1 = tmp;
+                tmp = tmp->down;
+                delete tmp1;
+            }
+             
+            tmp = cur;
+            cur = cur->next;
+            delete tmp;
+        }
     }
 
 

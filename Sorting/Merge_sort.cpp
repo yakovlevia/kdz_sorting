@@ -4,16 +4,7 @@
 
 template <typename T>
 class MergeSort : public Sort<T> {
-public:
-
-    MergeSort() {
-        this->set_name("Merge Sort");
-    }
-
-    int my_sort(std::vector<T> &vec, bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) override {
-        merge_sort(vec, cmp);
-        return std::is_sorted(vec.begin(), vec.end(), cmp);
-    }
+protected:
 
     void merge(std::vector <T> &vec, int left, int mid, int right, bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) {
         int it_l = 0;
@@ -52,6 +43,17 @@ public:
                 merge(vec, j, j + i, std::min(j + 2 * i, (int)vec.size()), cmp);
             }
         }
+    }
+
+public:
+
+    MergeSort() {
+        this->set_name("Merge Sort");
+    }
+
+    int my_sort(std::vector<T> &vec, bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) override {
+        merge_sort(vec, cmp);
+        return std::is_sorted(vec.begin(), vec.end(), cmp);
     }
 
 };

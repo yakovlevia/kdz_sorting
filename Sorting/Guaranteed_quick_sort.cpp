@@ -5,16 +5,7 @@
 
 template <typename T>
 class GuaranteedQuickSort : public Sort<T> {
-public:
-
-    GuaranteedQuickSort() {
-        this->set_name("Guaranteed Quick Sort");
-    }
-
-    int my_sort(std::vector<T> &vec, bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) override {
-        quick_sort(vec, 0, (int)vec.size() - 1, cmp);
-        return std::is_sorted(vec.begin(), vec.end(), cmp);
-    }
+protected:
 
     void quick_sort(std::vector <T> &vec, int l, int r, bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) {
         if (l >= r) {
@@ -65,6 +56,17 @@ public:
     T median_of_5_elements(std::vector <T> &vec, int l, int r, bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) {   
         std::sort(vec.begin() + l, vec.begin() + r + 1, cmp);
         return vec[l + (r - l) / 2];
+    }
+
+public:
+
+    GuaranteedQuickSort() {
+        this->set_name("Guaranteed Quick Sort");
+    }
+
+    int my_sort(std::vector<T> &vec, bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) override {
+        quick_sort(vec, 0, (int)vec.size() - 1, cmp);
+        return std::is_sorted(vec.begin(), vec.end(), cmp);
     }
 
 };
