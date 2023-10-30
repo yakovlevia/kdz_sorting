@@ -23,7 +23,7 @@ public:
         return sort_name;
     }
 
-    void print(std::vector<T> &vec) {
+    void print(const std::vector<T> &vec) const {
         for (int i = 0; i < vec.size(); i++) {
             std::cout << vec[i] << " ";
         }
