@@ -53,8 +53,78 @@ protected:
         return get_median(tmp, 0, tmp.size() - 1, cmp);
     }
 
+    void simple_sort(std::vector <T> &vec, int l, int r, bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) {
+        for (int i = l + 1; i <= r; i++) {
+            int k = i;
+            while (k > 0) {
+                if (cmp(vec[k], vec[k - 1])) {
+                    std::swap(vec[k - 1],  vec[k]);
+                    k--;
+                }
+                else { 
+                    break; 
+                }
+            }
+        }
+    }
+
     T median_of_5_elements(std::vector <T> &vec, int l, int r, bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) {   
-        std::sort(vec.begin() + l, vec.begin() + r + 1, cmp);
+        if (r - l < 4) {
+            simple_sort(vec, l, r, cmp);
+        }
+        else {
+            if (cmp(vec[l + 1], vec[l + 0])) std::swap(vec[l + 1], vec[l + 0]);  // vec[0] <= vec[1]
+            if (cmp(vec[l + 2], vec[l + 3])) std::swap(vec[l + 2], vec[l + 3]);  // vec[2] <= vec[3] && vec[0] <= vec[1]
+            if (cmp(vec[l + 0], vec[l + 2])) {                                   // vec[0] <= vec[1] <= vec[2] && vec[0] <= vec[3]
+                std::swap(vec[l + 1], vec[l + 2]);
+                std::swap(vec[l + 2], vec[l + 3]);
+            }
+            else {
+                std::swap(vec[l + 0], vec[l + 2]);
+                std::swap(vec[l + 1], vec[l + 2]);
+            }
+            
+            if (cmp(vec[l + 4], vec[l + 1])) {                                   // vec[0] <= vec[1] <= vec[2] <= vec[3] && vec[0] <= vec[4]
+                if (cmp(vec[l + 4], vec[l + 0])) {
+                    std::swap(vec[l + 0], vec[l + 4]);
+                    std::swap(vec[l + 1], vec[l + 4]);
+                    std::swap(vec[l + 2], vec[l + 4]);
+                    std::swap(vec[l + 3], vec[l + 4]);
+                }
+                else {
+                    std::swap(vec[l + 1], vec[l + 4]);
+                    std::swap(vec[l + 2], vec[l + 4]);
+                    std::swap(vec[l + 3], vec[l + 4]);
+                }
+            }
+            else {
+                if (cmp(vec[l + 4], vec[l + 2])) {
+                    std::swap(vec[l + 2], vec[l + 4]);
+                    std::swap(vec[l + 3], vec[l + 4]);
+                }
+                else {
+                    std::swap(vec[l + 3], vec[l + 4]);
+                }
+            }
+
+            if (cmp(vec[l + 4], vec[l + 2])) {                                    // vec[0] <= vec[1] <= vec[2] <= vec[3] <= vec[4]
+                if (cmp(vec[l + 4], vec[l + 1])) {
+                    std::swap(vec[l + 1], vec[l + 4]);
+                    std::swap(vec[l + 2], vec[l + 4]);
+                    std::swap(vec[l + 3], vec[l + 4]);
+                }
+                else {
+                    std::swap(vec[l + 2], vec[l + 4]);
+                    std::swap(vec[l + 3], vec[l + 4]);
+                }
+            }
+            else {
+                if (cmp(vec[l + 4], vec[l + 3])) {
+                    std::swap(vec[l + 3], vec[l + 4]);
+                }
+            }
+        }
+        
         return vec[l + (r - l) / 2];
     }
 

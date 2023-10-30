@@ -12,9 +12,19 @@ public:
 
     int my_sort(std::vector<T> &vec, bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) override {
         for (int i = 1; i < vec.size(); i++) {
-            int k = 1;
             int l = 0;
-            int pos = std::lower_bound(vec.begin(), vec.begin() + i, vec[i], cmp) - vec.begin();
+            int r = i;
+            while (l < r) {
+                int mid = (l + r) >> 1;
+                if (cmp(vec[i], vec[mid])) {
+                    r = mid;
+                }
+                else {
+                    l = mid + 1;
+                }
+            }
+            int pos = r;
+            //pos = std::lower_bound(vec.begin(), vec.begin() + i, vec[i], cmp) - vec.begin();
             for (int j = i; j > pos; j--) {
                 std::swap(vec[j], vec[j - 1]);
             }
