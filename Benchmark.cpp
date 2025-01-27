@@ -32,6 +32,7 @@ public:
         rnd.seed(randD());
         small_test_sizes = {10, 50, 100, 500, 1000, 5000, 10000};
         big_test_sizes = {100, 500, 1000, 5000, 10000, 50000, 100000, 500000, 1000000, 5000000};
+        //big_test_sizes = {5000000};
         string_test_sizes = {10, 50, 100, 500, 1000, 5000, 10000};
         sort_names = {"Heap Sort", "Guaranteed Quick Sort", "Insertion Sort", "Quick Sort", "Merge Sort", "Binary Search Insertion Sort", "Skip List Sort"};
         srt = nullptr;
@@ -92,9 +93,10 @@ public:
             std::uniform_int_distribution<int> gen(0, 25);
             for (int i = 0; i < n; i++) {
                 std::string tmp_str;
-                for (int j = 0; j < str_size; j++) {
-                    tmp_str.push_back(char('a' + gen(rnd)));
+                for (int j = 0; j < str_size - 1; j++) {
+                    tmp_str.push_back(char('a'));
                 }
+                tmp_str.push_back(char('a' + gen(rnd)));
                 test[i] = tmp_str;
             }
         }
@@ -121,7 +123,52 @@ public:
     long long run_n_tests(int size, int n, int str_size = -1, bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) {
         long long time = 0;
         for (int i = 0; i < n; i++) {
+            //long long t = time;
             time += run_1_test(size, str_size, cmp);
+            //std::cout << std::endl;
+            //std ::cout << time - t << std::endl;
+        }
+        time /= n;
+        return time;
+    }
+    
+    double run_1_str_test(int size, int str_size = -1, bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) {
+        std::vector <T> tmp = make_random_test(size, str_size);
+        std::vector <T> tt = tmp;
+        chage_sort("Insertion Sort");
+        auto c_start = std::chrono::high_resolution_clock::now();
+        if (!srt->my_sort(tt, cmp)) {
+            std::cout << "The array is sorted incorrectly\n";
+            print(tt);
+            exit(-1);
+
+        }
+        auto c_end = std::chrono::high_resolution_clock::now();
+        long long time1 = std::chrono::duration_cast<std::chrono::nanoseconds>(c_end - c_start).count();
+        chage_sort("Binary Search Insertion Sort");
+        auto c_start1 = std::chrono::high_resolution_clock::now();
+        if (!srt->my_sort(tmp, cmp)) {
+            std::cout << "The array is sorted incorrectly\n";
+            print(tmp);
+            exit(-1);
+            
+        }
+        auto c_end1 = std::chrono::high_resolution_clock::now();
+        long long time2 = std::chrono::duration_cast<std::chrono::nanoseconds>(c_end1 - c_start1).count();
+        //std::cout << time2 << " " << time1 << " " << time2 / double(time1) << "\n";
+        return time2 / double(time1);
+    }
+
+
+
+
+    double run_n_str_tests(int size, int n, int str_size = -1, bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) {
+        double time = 0;
+        for (int i = 0; i < n; i++) {
+            //long long t = time;
+            time += run_1_str_test(size, str_size, cmp);
+            //std::cout << std::endl;
+            //std ::cout << time - t << std::endl;
         }
         time /= n;
         return time;
@@ -132,11 +179,19 @@ public:
             std:: cout << "The Bechmark is not number\n";
             exit(-1);
         }
+
         std::cout << srt->get_name() << "\n";
+        for (auto &g : small_test_sizes) {
+            std::cout << run_n_tests(g, 10, -1, cmp) << ", ";
+        }
+        std::cout << "\n";
+
+        /*std::cout << srt->get_name() << "\n";
         for (auto &g : small_test_sizes) {
             std::cout << std::setw(10) << g << " | " << std::setw(11) << run_n_tests(g, 10, -1, cmp) << " nanoseconds\n";
         }
         std::cout << "\n";
+        */
     }
 
     void get_all_time_for_small_numeric_type_tests(bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) {
@@ -155,11 +210,18 @@ public:
             std:: cout << "The Bechmark is not number\n";
             exit(-1);
         }
+
         std::cout << srt->get_name() << "\n";
         for (auto &g : big_test_sizes) {
-            std::cout << std::setw(10) << g << " | " << std::setw(11) << run_n_tests(g, 10, -1, cmp) << " nanoseconds\n";
+            std::cout << run_n_tests(g, 2, -1, cmp) << ", ";
         }
         std::cout << "\n";
+
+        // std::cout << srt->get_name() << "\n";
+        // for (auto &g : big_test_sizes) {
+        //     std::cout << std::setw(10) << g << " | " << std::setw(11) << run_n_tests(g, 10, -1, cmp) << " nanoseconds\n";
+        // }
+        // std::cout << "\n";
     }
 
     void get_all_time_for_big_numeric_type_tests(bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) {
@@ -181,15 +243,51 @@ public:
             exit(-1);
         }
         std::cout << srt->get_name() << "\n";
-        std::cout << std::setw(11) << "N /\ M";
+        std::cout << std::setw(11) << "N \\ M";
         for (int i = 0; i < string_test_sizes.size(); i++) {
-            std::cout << "|" << std::setw(25) << string_test_sizes[i];
+            //std::cout << "|" << std::setw(25) << string_test_sizes[i];
         }
         std::cout << '\n';
         for (auto &g : small_test_sizes) {
-            std::cout << std::setw(10) << g;
+            //std::cout << std::setw(10) << g;
             for (auto &q :string_test_sizes) {
-                std::cout << " | " << std::setw(11) << run_n_tests(g, 10, q, cmp) << " nanoseconds";
+                std::cout << run_n_tests(g, 10, q, cmp) << ", ";
+                //std::cout << " | " << std::setw(11) << run_n_tests(g, 10, q, cmp) << " nanoseconds";
+            }
+            std::cout << "\n";
+        }
+        std::cout << "\n";
+    }
+
+
+    void test_str(bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) {
+        if constexpr (!std::is_same_v<T, std::string>) {
+            std:: cout << "The Bechmark is not string\n";
+            exit(-1);
+        }
+
+        for (auto &g : small_test_sizes) {
+            for (auto &q :string_test_sizes) {
+                std::cout << std::fixed << std::setprecision(4) << run_n_str_tests(g, 10, q, cmp) << ", ";
+            }
+            std::cout << "\n";
+        }
+        std::cout << "\n";
+    }
+
+    void test_str1(bool cmp (const T &a, const T &b) = [](const T &a, const T &b) {return a < b;}) {
+        if constexpr (!std::is_same_v<T, std::string>) {
+            std:: cout << "The Bechmark is not string\n";
+            exit(-1);
+        }
+
+        for (auto &g : small_test_sizes) {
+            for (auto &q :string_test_sizes) {
+                chage_sort("Insertion Sort");
+                long long tt = run_n_tests(g, 10, q, cmp);
+                chage_sort("Binary Search Insertion Sort");
+                long long ttt = run_n_tests(g, 10, q, cmp);
+                std::cout << std::fixed << std::setprecision(4) << ttt / double(tt) << ", ";
             }
             std::cout << "\n";
         }
@@ -202,7 +300,6 @@ public:
             exit(-1);
         }
         for (int i = 0; i < sort_names.size(); i++) {
-            if (sort_names[i] == "Insertion Sort") continue;
             chage_sort(sort_names[i]);
             get_cur_time_for_string_tests(cmp);
         }
